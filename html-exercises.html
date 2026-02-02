@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML-задания с проверкой</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            padding: 24px;
+            line-height: 1.6;
+        }
+        h1 { color: #00d9ff; margin-bottom: 24px; }
+        .exercise {
+            background: #16213e;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid #2a2a4a;
+        }
+        .exercise h2 {
+            color: #e94560;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+        .exercise p { color: #aaa; margin-bottom: 12px; font-size: 0.95rem; }
+        .exercise code { background: #0f0f23; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            background: #0f0f23;
+            border: 1px solid #2a2a4a;
+            border-radius: 8px;
+            color: #eee;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            padding: 12px;
+            margin-bottom: 12px;
+            resize: vertical;
+        }
+        .btn-group { display: flex; gap: 12px; flex-wrap: wrap; }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-check {
+            background: linear-gradient(135deg, #00d9ff, #00a8cc);
+            color: #1a1a2e;
+        }
+        .btn-check:hover { opacity: 0.9; }
+        .btn-run {
+            background: #e94560;
+            color: #fff;
+        }
+        .btn-run:hover { opacity: 0.9; }
+        .result {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        .result.success { background: rgba(0, 200, 100, 0.2); color: #00ff88; border: 1px solid #00ff88; }
+        .result.error { background: rgba(255, 80, 80, 0.2); color: #ff6666; border: 1px solid #ff6666; }
+        .hint { font-size: 0.85rem; color: #666; margin-top: 8px; }
+    </style>
+</head>
+<body>
+    <h1>HTML-задания с проверкой</h1>
+
+    <!-- Задание 1 -->
+    <div class="exercise" data-task="1">
+        <h2>Задание 1: Создай заголовок и параграф</h2>
+        <p>Добавь теги так, чтобы получилась страница с заголовком первого уровня (<code>&lt;h1&gt;</code>) «Мой сайт» и параграфом (<code>&lt;p&gt;</code>) «Привет, мир!».</p>
+        <p class="hint">Проверка: должен быть ровно один h1 и один p с нужным текстом.</p>
+        <textarea id="code1" placeholder="Вставь HTML-код сюда..."><h1>Мой сайт</h1>
+<p>Привет, мир!</p></textarea>
+        <div class="btn-group">
+            <button class="btn-check" onclick="check(1)">Проверить</button>
+            <button class="btn-run" onclick="run(1)">Открыть в окне</button>
+        </div>
+        <div id="result1"></div>
+    </div>
+
+    <!-- Задание 2 -->
+    <div class="exercise" data-task="2">
+        <h2>Задание 2: Ссылка и изображение</h2>
+        <p>Создай ссылку (<code>&lt;a href="..."&gt;</code>) на https://google.com с текстом «Открыть Google» и картинку (<code>&lt;img src="..." alt="..."&gt;</code>) с src="https://via.placeholder.com/150" и alt="Плейсхолдер".</p>
+        <p class="hint">Проверка: одна ссылка на google.com, один img с placeholder.</p>
+        <textarea id="code2" placeholder="Вставь HTML-код сюда..."></textarea>
+        <div class="btn-group">
+            <button class="btn-check" onclick="check(2)">Проверить</button>
+            <button class="btn-run" onclick="run(2)">Открыть в окне</button>
+        </div>
+        <div id="result2"></div>
+    </div>
+
+    <!-- Задание 3 -->
+    <div class="exercise" data-task="3">
+        <h2>Задание 3: Нумерованный список</h2>
+        <p>Создай нумерованный список (<code>&lt;ol&gt;</code>) из трёх пунктов (<code>&lt;li&gt;</code>): «HTML», «CSS», «JavaScript».</p>
+        <p class="hint">Проверка: один ol, три li с правильным текстом.</p>
+        <textarea id="code3" placeholder="Вставь HTML-код сюда..."></textarea>
+        <div class="btn-group">
+            <button class="btn-check" onclick="check(3)">Проверить</button>
+            <button class="btn-run" onclick="run(3)">Открыть в окне</button>
+        </div>
+        <div id="result3"></div>
+    </div>
+
+    <!-- Задание 4 -->
+    <div class="exercise" data-task="4">
+        <h2>Задание 4: Таблица 2×2</h2>
+        <p>Создай таблицу (<code>&lt;table&gt;</code>) с двумя строками (<code>&lt;tr&gt;</code>), в каждой по две ячейки (<code>&lt;td&gt;</code>). Заполни: A1, A2 в первой строке; B1, B2 во второй.</p>
+        <p class="hint">Проверка: table, 2 tr, 4 td с текстом A1, A2, B1, B2.</p>
+        <textarea id="code4" placeholder="Вставь HTML-код сюда..."></textarea>
+        <div class="btn-group">
+            <button class="btn-check" onclick="check(4)">Проверить</button>
+            <button class="btn-run" onclick="run(4)">Открыть в окне</button>
+        </div>
+        <div id="result4"></div>
+    </div>
+
+    <!-- Задание 5 -->
+    <div class="exercise" data-task="5">
+        <h2>Задание 5: Форма с полями</h2>
+        <p>Создай форму (<code>&lt;form&gt;</code>) с методом POST и действием "/submit". Внутри: поле ввода имени (<code>input type="text" name="name"</code>), пароля (<code>input type="password" name="pass"</code>) и кнопку отправки (<code>button type="submit"</code>).</p>
+        <p class="hint">Проверка: form с method="post", input name="name", input name="pass", submit-кнопка.</p>
+        <textarea id="code5" placeholder="Вставь HTML-код сюда..."></textarea>
+        <div class="btn-group">
+            <button class="btn-check" onclick="check(5)">Проверить</button>
+            <button class="btn-run" onclick="run(5)">Открыть в окне</button>
+        </div>
+        <div id="result5"></div>
+    </div>
+
+    <script>
+        const baseHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Проверка</title></head><body>`;
+        const baseHTMLend = `</body></html>`;
+
+        function getCode(n) {
+            return document.getElementById('code' + n).value.trim();
+        }
+
+        function showResult(n, ok, msg) {
+            const el = document.getElementById('result' + n);
+            el.className = 'result ' + (ok ? 'success' : 'error');
+            el.textContent = msg;
+        }
+
+        function run(n) {
+            const html = baseHTML + getCode(n) + baseHTMLend;
+            const w = window.open('', '_blank', 'width=600,height=400');
+            w.document.write(html);
+            w.document.close();
+        }
+
+        function parseHTML(html) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(baseHTML + html + baseHTMLend, 'text/html');
+            return doc.body;
+        }
+
+        function check(n) {
+            const code = getCode(n);
+            if (!code) {
+                showResult(n, false, 'Вставь HTML-код и нажми «Проверить».');
+                return;
+            }
+
+            let body;
+            try {
+                body = parseHTML(code);
+            } catch (e) {
+                showResult(n, false, 'Ошибка разбора HTML: ' + e.message);
+                return;
+            }
+
+            const text = (el) => (el ? (el.textContent || '').trim() : '');
+            const getAttr = (el, attr) => (el ? (el.getAttribute(attr) || '').toLowerCase() : '');
+
+            switch (n) {
+                case 1: {
+                    const h1s = body.querySelectorAll('h1');
+                    const ps = body.querySelectorAll('p');
+                    const h1 = h1s[0];
+                    const p = ps[0];
+                    if (h1s.length !== 1 || ps.length !== 1) {
+                        showResult(n, false, 'Нужно ровно один h1 и один p.');
+                        return;
+                    }
+                    if (!text(h1).toLowerCase().includes('мой') || !text(h1).toLowerCase().includes('сайт')) {
+                        showResult(n, false, 'В h1 должен быть текст «Мой сайт».');
+                        return;
+                    }
+                    if (!text(p).toLowerCase().includes('привет') || !text(p).toLowerCase().includes('мир')) {
+                        showResult(n, false, 'В p должен быть текст «Привет, мир!».');
+                        return;
+                    }
+                    showResult(n, true, '✓ Всё верно!');
+                    break;
+                }
+
+                case 2: {
+                    const links = body.querySelectorAll('a[href]');
+                    const imgs = body.querySelectorAll('img');
+                    const link = [...links].find(a => getAttr(a, 'href').includes('google'));
+                    const img = [...imgs].find(i => getAttr(i, 'src').includes('placeholder'));
+                    if (!link) {
+                        showResult(n, false, 'Нужна ссылка (a) на google.com.');
+                        return;
+                    }
+                    if (!img) {
+                        showResult(n, false, 'Нужна картинка (img) с via.placeholder.com.');
+                        return;
+                    }
+                    if (!getAttr(img, 'alt')) {
+                        showResult(n, false, 'У img должен быть атрибут alt.');
+                        return;
+                    }
+                    showResult(n, true, '✓ Всё верно!');
+                    break;
+                }
+
+                case 3: {
+                    const ol = body.querySelector('ol');
+                    const lis = body.querySelectorAll('ol li, li');
+                    const texts = [...lis].map(li => text(li).toLowerCase());
+                    if (!ol) {
+                        showResult(n, false, 'Нужен тег ol.');
+                        return;
+                    }
+                    const olLis = ol.querySelectorAll('li');
+                    if (olLis.length < 3) {
+                        showResult(n, false, 'В ol должно быть минимум 3 пункта (li).');
+                        return;
+                    }
+                    const need = ['html', 'css', 'javascript'];
+                    const found = need.every(w => texts.some(t => t.includes(w)));
+                    if (!found) {
+                        showResult(n, false, 'Нужны пункты: HTML, CSS, JavaScript.');
+                        return;
+                    }
+                    showResult(n, true, '✓ Всё верно!');
+                    break;
+                }
+
+                case 4: {
+                    const table = body.querySelector('table');
+                    if (!table) {
+                        showResult(n, false, 'Нужна таблица (table).');
+                        return;
+                    }
+                    const trs = table.querySelectorAll('tr');
+                    const tds = table.querySelectorAll('td');
+                    const cellTexts = [...tds].map(td => text(td).toLowerCase().replace(/\s/g, ''));
+                    if (trs.length < 2) {
+                        showResult(n, false, 'Нужно минимум 2 строки (tr).');
+                        return;
+                    }
+                    if (tds.length < 4) {
+                        showResult(n, false, 'Нужно минимум 4 ячейки (td).');
+                        return;
+                    }
+                    const needCells = ['a1', 'a2', 'b1', 'b2'];
+                    const foundCells = needCells.every(c => cellTexts.some(t => t === c));
+                    if (!foundCells) {
+                        showResult(n, false, 'В ячейках должны быть: A1, A2, B1, B2.');
+                        return;
+                    }
+                    showResult(n, true, '✓ Всё верно!');
+                    break;
+                }
+
+                case 5: {
+                    const form = body.querySelector('form');
+                    if (!form) {
+                        showResult(n, false, 'Нужна форма (form).');
+                        return;
+                    }
+                    if (getAttr(form, 'method') !== 'post') {
+                        showResult(n, false, 'У form должен быть method="post".');
+                        return;
+                    }
+                    const inputs = body.querySelectorAll('input');
+                    const nameInputOk = [...inputs].some(i => getAttr(i, 'name') === 'name');
+                    const passInputOk = [...inputs].some(i => getAttr(i, 'type') === 'password' && getAttr(i, 'name') === 'pass');
+                    if (!nameInputOk) {
+                        showResult(n, false, 'Нужен input с name="name".');
+                        return;
+                    }
+                    if (!passInputOk) {
+                        showResult(n, false, 'Нужен input type="password" с name="pass".');
+                        return;
+                    }
+                    const submit = body.querySelector('button[type="submit"], input[type="submit"]');
+                    if (!submit) {
+                        showResult(n, false, 'Нужна кнопка отправки (button type="submit" или input type="submit").');
+                        return;
+                    }
+                    showResult(n, true, '✓ Всё верно!');
+                    break;
+                }
+
+                default:
+                    showResult(n, false, 'Неизвестное задание.');
+            }
+        }
+    </script>
+</body>
+</html>
