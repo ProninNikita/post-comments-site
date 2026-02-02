@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пост с комментариями</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f0f12;
+            --bg-card: #1a1a20;
+            --bg-hover: #23232a;
+            --accent: #00d9ff;
+            --accent-dim: #00a8cc;
+            --text: #e8e8ed;
+            --text-muted: #8888a0;
+            --border: #2a2a32;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 40px 20px;
+            background-image: 
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 217, 255, 0.08), transparent),
+                radial-gradient(ellipse 60% 40% at 100% 100%, rgba(0, 168, 204, 0.05), transparent);
+        }
+
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .post-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .author-info {
+            flex: 1;
+        }
+
+        .author-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .post-date {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .post-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .post-content {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        .comments-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 24px;
+            padding: 12px 20px;
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .comments-toggle:hover {
+            background: rgba(0, 217, 255, 0.1);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .comments-toggle svg {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .comments-toggle.expanded svg {
+            transform: rotate(180deg);
+        }
+
+        .comments-section {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .comments-section.visible {
+            max-height: 1200px;
+        }
+
+        .comments-list {
+            margin-top: 20px;
+        }
+
+        .comment-form {
+            margin-bottom: 24px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .comment-input {
+            flex: 1;
+            padding: 14px 18px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .comment-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .comment-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .comment-submit {
+            padding: 14px 24px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+            border: none;
+            border-radius: 12px;
+            color: var(--bg-dark);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .comment-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(0, 217, 255, 0.3);
+        }
+
+        .comment-item {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .comment-author {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            color: var(--accent);
+        }
+
+        .comment-text {
+            color: var(--text-muted);
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .comments-count {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-left: 4px;
+        }
+
+        .add-post-card {
+            margin-bottom: 32px;
+            border: 2px dashed var(--border);
+            background: rgba(0, 217, 255, 0.03);
+        }
+
+        .add-post-card:hover {
+            border-color: var(--accent-dim);
+        }
+
+        .add-post-title {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .post-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 18px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        textarea.form-input {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .add-post-btn {
+            padding: 14px 24px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+            border: none;
+            border-radius: 12px;
+            color: var(--bg-dark);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            align-self: flex-start;
+        }
+
+        .add-post-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(0, 217, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <article class="post-card add-post-card">
+            <h2 class="add-post-title">Новый пост</h2>
+            <form class="post-form" id="addPostForm">
+                <div class="form-group">
+                    <label for="postAuthor">Ваше имя</label>
+                    <input type="text" class="form-input" id="postAuthor" placeholder="Как вас зовут?" maxlength="50">
+                </div>
+                <div class="form-group">
+                    <label for="postTitle">Заголовок</label>
+                    <input type="text" class="form-input" id="postTitle" placeholder="О чём пост?" maxlength="200" required>
+                </div>
+                <div class="form-group">
+                    <label for="postContent">Текст поста</label>
+                    <textarea class="form-input" id="postContent" placeholder="Напишите что-нибудь..." maxlength="5000"></textarea>
+                </div>
+                <button type="submit" class="add-post-btn">Опубликовать</button>
+            </form>
+        </article>
+
+        <div id="postsContainer"></div>
+    </div>
+
+    <script>
+        const COMMENT_ICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`;
+
+        const defaultPosts = [{
+            id: '1',
+            author: 'Алексей',
+            title: 'Добро пожаловать в мой блог',
+            content: 'Здесь я делюсь своими мыслями и идеями. Не стесняйтесь оставлять комментарии — мне интересно услышать ваше мнение!',
+            date: '1 февраля 2025',
+            comments: []
+        }];
+
+        let posts = JSON.parse(localStorage.getItem('posts')) || defaultPosts;
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text || '';
+            return div.innerHTML;
+        }
+
+        function formatDate() {
+            const d = new Date();
+            const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+            return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+        }
+
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).slice(2);
+        }
+
+        function savePosts() {
+            localStorage.setItem('posts', JSON.stringify(posts));
+        }
+
+        function toggleComments(postId) {
+            const section = document.getElementById(`comments-${postId}`);
+            const btn = document.getElementById(`toggle-${postId}`);
+            const isExpanded = section.classList.toggle('visible');
+            btn.classList.toggle('expanded', isExpanded);
+            btn.setAttribute('aria-expanded', isExpanded);
+        }
+
+        function addComment(postId, inputEl) {
+            const text = inputEl.value.trim();
+            if (!text) return;
+
+            const post = posts.find(p => p.id === postId);
+            if (!post) return;
+
+            post.comments = post.comments || [];
+            post.comments.push({ author: 'Гость', text });
+            savePosts();
+
+            inputEl.value = '';
+            renderAllPosts();
+
+            const section = document.getElementById(`comments-${postId}`);
+            const btn = document.getElementById(`toggle-${postId}`);
+            if (section && btn) {
+                section.classList.add('visible');
+                btn.classList.add('expanded');
+                btn.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        function renderPost(post) {
+            const comments = post.comments || [];
+            return `
+                <article class="post-card" data-post-id="${post.id}">
+                    <div class="post-meta">
+                        <div class="avatar">${escapeHtml((post.author || 'А')[0].toUpperCase())}</div>
+                        <div class="author-info">
+                            <div class="author-name">${escapeHtml(post.author || 'Аноним')}</div>
+                            <div class="post-date">${escapeHtml(post.date)}</div>
+                        </div>
+                    </div>
+                    <h2 class="post-title">${escapeHtml(post.title)}</h2>
+                    <p class="post-content">${escapeHtml(post.content) || '—'}</p>
+                    <button class="comments-toggle" id="toggle-${post.id}" onclick="toggleComments('${post.id}')" aria-expanded="false">
+                        ${COMMENT_ICON}
+                        Комментарии
+                        <span class="comments-count">(${comments.length})</span>
+                    </button>
+                    <div class="comments-section" id="comments-${post.id}">
+                        <div class="comment-form">
+                            <input type="text" class="comment-input" placeholder="Напишите комментарий..." maxlength="500"
+                                onkeypress="if(event.key==='Enter')addComment('${post.id}', this)">
+                            <button class="comment-submit" onclick="addComment('${post.id}', this.previousElementSibling)">Отправить</button>
+                        </div>
+                        <div class="comments-list">
+                            ${comments.map(c => `
+                                <div class="comment-item">
+                                    <div class="comment-author">${escapeHtml(c.author)}</div>
+                                    <div class="comment-text">${escapeHtml(c.text)}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
+        function renderAllPosts() {
+            const container = document.getElementById('postsContainer');
+            container.innerHTML = posts.map(renderPost).join('');
+        }
+
+        document.getElementById('addPostForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const author = document.getElementById('postAuthor').value.trim() || 'Аноним';
+            const title = document.getElementById('postTitle').value.trim();
+            const content = document.getElementById('postContent').value.trim();
+
+            if (!title) return;
+
+            posts.unshift({
+                id: generateId(),
+                author,
+                title,
+                content,
+                date: formatDate(),
+                comments: []
+            });
+
+            savePosts();
+            renderAllPosts();
+
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postContent').value = '';
+        });
+
+        renderAllPosts();
+    </script>
+</body>
+</html>
